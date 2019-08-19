@@ -1,0 +1,23 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "pdepflix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "elm reactor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pdep-lunes/pdepflix-elm-2018.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pdep-lunes/pdepflix-elm-2018/issues"
+  },
+  "homepage": "https://github.com/pdep-lunes/pdepflix-elm-2018#readme",
+  "dependencies": {
+    "elm": "^0.18.0"
+  }
+}
