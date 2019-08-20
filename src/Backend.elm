@@ -1,20 +1,18 @@
 module Backend exposing(..)
 import Models exposing(Movie, Preferences)
 
-completaAca = identity --QUE TENGO QUE COMPLETAR ACA????????
-
 -- **************
 -- Requerimiento: filtrar películas por su título a medida que se escribe en el buscador;
 -- **************
 
 filtrarPeliculasPorPalabrasClave : String -> List Movie -> List Movie
-filtrarPeliculasPorPalabrasClave palabras = List.filter (esIgualAlTexto palabras)
+filtrarPeliculasPorPalabrasClave palabras = List.filter(esIgualAlTexto palabras)
 
 esIgualAlTexto : String -> Movie -> Bool
 esIgualAlTexto texto pelicula = any (tieneParteDelTexto texto) [pelicula.title]
 
 tieneParteDelTexto : String -> Bool
-tieneParteDelTexto text = contains (toUpper text)
+tieneParteDelTexto texto = String.contains (toUpper texto)
 
 --QUE HACER CON LA FUNCION DE ABAJO?
 --peliculaTienePalabrasClave palabras pelicula = String.contains "Toy" pelicula.title
@@ -35,19 +33,18 @@ coincideConGenero genero pelicula = contains (genero) [pelicula.genre]
 -- **************
 
 filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
-filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = filter (mostrarSoloMenores)
+filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = if (mostrarSoloMenores == True) then List.filter(esAptaParaMenores)
 
-mostrarSoloMenores : Movie -> Bool
-mostrarSoloMenores pelicula = pelicula.forKids == True
+esAptaParaMenores : Movie -> Bool
+esAptaParaMenores pelicula = pelicula.forKids
 
---NOTA: No entiendo la parte del checkbox. Que tengo que hacer con el checkbox?
 
 -- **************
 -- Requerimiento: ordenar las películas por su rating;
 -- **************
 
 ordenarPeliculasPorRating : List Movie -> List Movie
-ordenarPeliculasPorRating = List.sort(map [pelicula.rating])
+ordenarPeliculasPorRating = List.sortBy([pelicula.rating])<<map [pelicula.rating]
 
 -- **************
 -- Requerimiento: dar like a una película
@@ -59,13 +56,13 @@ darLikeAPelicula id = map (likearPelicula id)
 likearPelicula : Int -> Movie -> Movie
 likearPelicula id pelicula = if idMatchs id pelicula then darleLike pelicula
 
-    idMatchs : Int -> Movie -> Bool
-    idMatchs id pelicula = id == [pelicula.id]
+idMatchs : Int -> Movie -> Bool
+idMatchs id pelicula = id == pelicula.id
 
 --NOTA: Me fije en el tp de Currify que hay un idMatch que se fija si una pelicula coincide con un id
 
     darleLike : Movie -> Movie
-    darleLike pelicula = {pelicula | liked = True}
+    darleLike pelicula = {pelicula | liked = True, likes = likes pelicula + 1}
 
 -- **************
 -- Requerimiento: cargar preferencias a través de un popup modal,
@@ -73,5 +70,14 @@ likearPelicula id pelicula = if idMatchs id pelicula then darleLike pelicula
 --                mostrarlo junto a la misma;
 -- **************
 
-calcularPorcentajeDeCoincidencia : Preferences -> List Movie -> List Movie
-calcularPorcentajeDeCoincidencia preferencias = completaAca
+calcularPorcentajeDeCoincidencia : Preferences -> List Movie -> List Movie 
+calcularPorcentajeDeCoincidencia preferencias = map(calcularPorcentajePorPelicula preferencias) 
+
+calcularPorcentajePorPelicula : Preferences -> Movie -> Int
+calcularPorcentajePorPelicula preferencias pelicula = if contains (preferencias.favoriteActor) [pelicula.actors] then (sumarPorcentaje pelicula 50)
+															else if (preferencias.genre) == [pelicula.genre] then (sumarPorcentaje pelicula 60)
+																else if (esIgualAlTexto (preferencias.keywords) [pelicula.title]) then (sumarPorcentaje pelicula 20)
+																
+sumarPorcentaje : Movie -> Int -> Movie
+sumarPorcentaje valor pelicula = {pelicula | matchPercentage = matchPercentage pelicula + valor}
+																

@@ -11,7 +11,6 @@ type alias Movie = {
   matchPercentage: Int,
   forKids: Bool,
   actors : List String
-  liked : Bool
 }
 
 type alias Image = {
