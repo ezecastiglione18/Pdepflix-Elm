@@ -38,7 +38,7 @@ filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = completaAca
 -- **************
 
 ordenarPeliculasPorRating : List Movie -> List Movie
-ordenarPeliculasPorRating = completaAca
+ordenarPeliculasPorRating = List.sortBy(.rating)
 
 -- **************
 -- Requerimiento: dar like a una película
