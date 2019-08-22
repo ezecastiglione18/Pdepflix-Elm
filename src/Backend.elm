@@ -45,7 +45,13 @@ ordenarPeliculasPorRating = List.sortBy(.rating)
 -- **************
 
 darLikeAPelicula : Int -> List Movie -> List Movie
-darLikeAPelicula id = completaAca
+darLikeAPelicula id = List.map(likearPelicula id)
+
+likearPelicula : Int -> Movie -> Movie
+likearPelicula id pelicula = if id == pelicula.id then darleLike pelicula
+
+darleLike : Movie -> Movie
+darleLike pelicula = {pelicula | likes = likes pelicula + 1}
 
 -- **************
 -- Requerimiento: cargar preferencias a través de un popup modal,
@@ -54,4 +60,19 @@ darLikeAPelicula id = completaAca
 -- **************
 
 calcularPorcentajeDeCoincidencia : Preferences -> List Movie -> List Movie
-calcularPorcentajeDeCoincidencia preferencias = completaAca
+calcularPorcentajeDeCoincidencia preferencias = List.map(calcularPorcentajePorPelicula preferencias) 
+
+calcularPorcentajePorPelicula : Preferences -> Movie -> Int
+calcularPorcentajePorPelicula preferencias pelicula = (actorFavorito preferencias pelicula)<<(generoFavorito preferencias pelicula)<<(palabrasClave preferencias pelicula)
+
+actorFavorito : Preferences -> Movie -> Movie
+actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor) pelicula.actors then (sumarPorcentaje pelicula 50)
+
+generoFavorito : Preferences -> Movie -> Movie
+generoFavorito preferencias pelicula = if (preferencias.genre) == pelicula.genre then (sumarPorcentaje pelicula 60)
+
+palabrasClave : Preferencias -> Movie -> Movie
+palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula.title) then (sumarPorcentaje pelicula 20)
+																
+sumarPorcentaje : Movie -> Int -> Movie
+sumarPorcentaje valor pelicula = {pelicula | matchPercentage = matchPercentage pelicula + valor}	
