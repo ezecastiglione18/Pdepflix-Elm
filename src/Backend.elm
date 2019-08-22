@@ -51,7 +51,7 @@ likearPelicula : Int -> Movie -> Movie
 likearPelicula id pelicula = if id == pelicula.id then darleLike pelicula else pelicula
 
 darleLike : Movie -> Movie
-darleLike pelicula = {pelicula | likes = likes pelicula + 1}
+darleLike pelicula = {pelicula | likes = pelicula.likes + 1}
 
 -- **************
 -- Requerimiento: cargar preferencias a través de un popup modal,
@@ -71,8 +71,8 @@ actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor
 generoFavorito : Preferences -> Movie -> Movie
 generoFavorito preferencias pelicula = if (preferencias.genre) == pelicula.genre then (sumarPorcentaje pelicula 60) else pelicula
 
-palabrasClave : Preferencias -> Movie -> Movie
+palabrasClave : Preferences -> Movie -> Movie
 palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula.title) then (sumarPorcentaje pelicula 20) else pelicula
 																
 sumarPorcentaje : Movie -> Int -> Movie
-sumarPorcentaje valor pelicula = {pelicula | matchPercentage = matchPercentage pelicula + valor}
+sumarPorcentaje valor pelicula = {pelicula | matchPercentage = pelicula.matchPercentage + valor}
