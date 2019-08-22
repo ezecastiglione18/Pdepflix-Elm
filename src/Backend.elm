@@ -31,7 +31,7 @@ coincideConGenero genero pelicula = List.member (genero) pelicula.genre
 -- **************
 
 filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
-filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = completaAca
+filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = List.filter(.forKids == True)
 
 -- **************
 -- Requerimiento: ordenar las películas por su rating;
@@ -48,7 +48,7 @@ darLikeAPelicula : Int -> List Movie -> List Movie
 darLikeAPelicula id = List.map(likearPelicula id)
 
 likearPelicula : Int -> Movie -> Movie
-likearPelicula id pelicula = if id == pelicula.id then darleLike pelicula
+likearPelicula id pelicula = if id == pelicula.id then darleLike pelicula else pelicula
 
 darleLike : Movie -> Movie
 darleLike pelicula = {pelicula | likes = likes pelicula + 1}
@@ -66,13 +66,13 @@ calcularPorcentajePorPelicula : Preferences -> Movie -> Int
 calcularPorcentajePorPelicula preferencias pelicula = (actorFavorito preferencias pelicula)<<(generoFavorito preferencias pelicula)<<(palabrasClave preferencias pelicula)
 
 actorFavorito : Preferences -> Movie -> Movie
-actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor) pelicula.actors then (sumarPorcentaje pelicula 50)
+actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor) pelicula.actors then (sumarPorcentaje pelicula 50) else pelicula
 
 generoFavorito : Preferences -> Movie -> Movie
-generoFavorito preferencias pelicula = if (preferencias.genre) == pelicula.genre then (sumarPorcentaje pelicula 60)
+generoFavorito preferencias pelicula = if (preferencias.genre) == pelicula.genre then (sumarPorcentaje pelicula 60) else pelicula
 
 palabrasClave : Preferencias -> Movie -> Movie
-palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula.title) then (sumarPorcentaje pelicula 20)
+palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula.title) then (sumarPorcentaje pelicula 20) else pelicula
 																
 sumarPorcentaje : Movie -> Int -> Movie
-sumarPorcentaje valor pelicula = {pelicula | matchPercentage = matchPercentage pelicula + valor}	
+sumarPorcentaje valor pelicula = {pelicula | matchPercentage = matchPercentage pelicula + valor}
