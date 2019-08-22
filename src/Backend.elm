@@ -31,7 +31,10 @@ coincideConGenero genero pelicula = List.member (genero) pelicula.genre
 -- **************
 
 filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
-filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = List.filter(.forKids == True)
+filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = List.filter(esAptaMenores mostrarSoloMenores)
+
+esAptaMenores : Bool -> Movie -> Bool
+esAptaMenores estadoActual pelicula = pelicula.forKids == estadoActual
 
 -- **************
 -- Requerimiento: ordenar las películas por su rating;
@@ -60,19 +63,4 @@ darleLike pelicula = {pelicula | likes = pelicula.likes + 1}
 -- **************
 
 calcularPorcentajeDeCoincidencia : Preferences -> List Movie -> List Movie
-calcularPorcentajeDeCoincidencia preferencias = List.map(calcularPorcentajePorPelicula preferencias) 
-
-calcularPorcentajePorPelicula : Preferences -> Movie -> Int
-calcularPorcentajePorPelicula preferencias pelicula = (actorFavorito preferencias pelicula)<<(generoFavorito preferencias pelicula)<<(palabrasClave preferencias pelicula)
-
-actorFavorito : Preferences -> Movie -> Movie
-actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor) pelicula.actors then (sumarPorcentaje pelicula 50) else pelicula
-
-generoFavorito : Preferences -> Movie -> Movie
-generoFavorito preferencias pelicula = if (preferencias.genre) == pelicula.genre then (sumarPorcentaje pelicula 60) else pelicula
-
-palabrasClave : Preferences -> Movie -> Movie
-palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula.title) then (sumarPorcentaje pelicula 20) else pelicula
-																
-sumarPorcentaje : Movie -> Int -> Movie
-sumarPorcentaje valor pelicula = {pelicula | matchPercentage = pelicula.matchPercentage + valor}
+calcularPorcentajeDeCoincidencia preferencias = completaAca
