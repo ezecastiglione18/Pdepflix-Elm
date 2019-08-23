@@ -31,10 +31,7 @@ coincideConGenero genero pelicula = List.member (genero) pelicula.genre
 -- **************
 
 filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
-filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = List.filter(esAptaMenores mostrarSoloMenores)
-
-esAptaMenores : Bool -> Movie -> Bool
-esAptaMenores estadoActual pelicula = pelicula.forKids == estadoActual
+filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores listaPeliculas = if mostrarSoloMenores == True then List.filter(.forKids) listaPeliculas else listaPeliculas
 
 -- **************
 -- Requerimiento: ordenar las películas por su rating;
