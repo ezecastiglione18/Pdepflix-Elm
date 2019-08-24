@@ -13,17 +13,17 @@ esIgualAlTexto : String -> Movie -> Bool
 esIgualAlTexto texto pelicula = tieneParteDelTexto texto pelicula.title
 
 tieneParteDelTexto : String -> String -> Bool
-tieneParteDelTexto texto tituloPelicula = String.contains(String.toUpper texto) tituloPelicula
+tieneParteDelTexto texto tituloPelicula = String.contains (String.toUpper texto) (String.toUpper tituloPelicula)
 
 -- **************
 -- Requerimiento: visualizar las películas según el género elegido en un selector;
 -- **************
 
 filtrarPeliculasPorGenero : String -> List Movie -> List Movie
-filtrarPeliculasPorGenero genero = List.filter(coincideConGenero genero)
+filtrarPeliculasPorGenero genero = List.filter(contieneGenero genero)
 
-coincideConGenero : String -> Movie -> Bool
-coincideConGenero genero pelicula = List.member (genero) pelicula.genre
+contieneGenero : String -> Movie -> Bool
+contieneGenero genero pelicula = List.member(genero) pelicula.genre
 
 -- **************
 -- Requerimiento: filtrar las películas que sean aptas para menores de edad,
