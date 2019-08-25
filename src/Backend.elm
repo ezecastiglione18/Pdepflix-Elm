@@ -60,4 +60,23 @@ darleLike pelicula = {pelicula | likes = pelicula.likes + 1}
 -- **************
 
 calcularPorcentajeDeCoincidencia : Preferences -> List Movie -> List Movie
-calcularPorcentajeDeCoincidencia preferencias = completaAca
+calcularPorcentajeDeCoincidencia preferencias = List.map(calcularPorcentajePorPelicula preferencias)
+
+
+--ESTA ES LA FUNCION QUE GENERA PROBLEMAS
+calcularPorcentajePorPelicula : Preferences -> Movie -> Movie
+calcularPorcentajePorPelicula preferencias pelicula = actorFavorito preferencias pelicula
+
+
+--LAS FUNCIONES A PARTIR DE ACA COMPILAN Y FUNCIONAN
+actorFavorito : Preferences -> Movie -> Movie
+actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor) pelicula.actors then (sumarPorcentaje pelicula 50) else pelicula
+
+generoFavorito : Preferences -> Movie -> Movie
+generoFavorito preferencias pelicula = if List.member(preferencias.genre) pelicula.genre then (sumarPorcentaje pelicula 60) else pelicula
+
+palabrasClave : Preferences -> Movie -> Movie
+palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula) then (sumarPorcentaje pelicula 20) else pelicula
+
+sumarPorcentaje : Movie -> Int -> Movie
+sumarPorcentaje pelicula valor = {pelicula | matchPercentage = pelicula.matchPercentage + valor}
