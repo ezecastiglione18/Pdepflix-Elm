@@ -64,6 +64,8 @@ calcularPorcentajeDeCoincidencia preferencias = List.map(calcularPorcentajePorPe
 
 
 --ESTA ES LA FUNCION QUE GENERA PROBLEMAS
+
+
 calcularPorcentajePorPelicula : Preferences -> Movie -> Movie
 calcularPorcentajePorPelicula preferencias pelicula = actorFavorito preferencias pelicula
 
