@@ -68,7 +68,7 @@ vaciarPorcentajes : Movie -> Movie
 vaciarPorcentajes pelicula = {pelicula | matchPercentage = 0}
 
 calcularPorcentajePorPelicula : Preferences -> Movie -> Movie
-calcularPorcentajePorPelicula preferencias pelicula = actorFavorito preferencias (generoFavorito preferencias (palabrasClave preferencias pelicula))
+calcularPorcentajePorPelicula preferencias pelicula = ((actorFavorito preferencias)<<(generoFavorito preferencias)<<(palabrasClave preferencias)) pelicula
 
 --LAS FUNCIONES A PARTIR DE ACA COMPILAN Y FUNCIONAN
 actorFavorito : Preferences -> Movie -> Movie
