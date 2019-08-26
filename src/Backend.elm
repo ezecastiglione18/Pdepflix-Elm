@@ -12,8 +12,6 @@ filtrarPeliculasPorPalabrasClave palabras = List.filter(esIgualAlTexto palabras)
 esIgualAlTexto : String -> Movie -> Bool
 esIgualAlTexto texto pelicula = tieneParteDelTexto texto pelicula.title
 
---FALTA LA PARTE QUE TE RECONOZCA "AVENGERS: AGE OF ULTRON" CUANDO ESCRIBAS "AVENGERS ULTRON"
-
 tieneParteDelTexto : String -> String -> Bool
 tieneParteDelTexto texto tituloPelicula = String.contains (String.toUpper texto) (String.toUpper tituloPelicula)
 
@@ -70,7 +68,6 @@ vaciarPorcentajes pelicula = {pelicula | matchPercentage = 0}
 calcularPorcentajePorPelicula : Preferences -> Movie -> Movie
 calcularPorcentajePorPelicula preferencias pelicula = ((actorFavorito preferencias)<<(generoFavorito preferencias)<<(palabrasClave preferencias)) pelicula
 
---LAS FUNCIONES A PARTIR DE ACA COMPILAN Y FUNCIONAN
 actorFavorito : Preferences -> Movie -> Movie
 actorFavorito preferencias pelicula = if List.member (preferencias.favoriteActor) pelicula.actors then (sumarPorcentaje pelicula 50) else pelicula
 
@@ -80,7 +77,5 @@ generoFavorito preferencias pelicula = if List.member(preferencias.genre) pelicu
 palabrasClave : Preferences -> Movie -> Movie
 palabrasClave preferencias pelicula = if (esIgualAlTexto (preferencias.keywords) pelicula) then (sumarPorcentaje pelicula 20) else pelicula
 
---FALTA LA PARTE DE QUE SEA COMO MAXIMO 100
-
 sumarPorcentaje : Movie -> Int -> Movie
-sumarPorcentaje pelicula valor = {pelicula | matchPercentage = pelicula.matchPercentage + valor}
+sumarPorcentaje pelicula nuevoPorcentaje = {pelicula | matchPercentage = min (pelicula.matchPercentage + nuevoPorcentaje) 100}
